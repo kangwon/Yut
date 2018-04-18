@@ -30,12 +30,19 @@ template = """
 
 class MapNode:
 
-    nexts = list()
-    players = list()
-    score = 0
+    def __init__(self, index):
+        self.nexts = list()
+        self.players = list()
+        self.index = index
 
     def __str__(self):
-        return '+' if self.players else 'o'
+        if self.players:
+            return self.players[0].name
+        else:
+            return 'o'
+
+    def get_next(self):
+        return self.nexts[0]
 
 
 class Map:
@@ -44,7 +51,7 @@ class Map:
 
     def __init__(self):
         for i in range(29):
-            self.nodes.append(MapNode())
+            self.nodes.append(MapNode(i))
         
         for i in range(19, 0, -1):
             self.nodes[i-1].nexts.append(self.nodes[i])
@@ -67,6 +74,10 @@ class Map:
 
     def __str__(self):
         return template.format(*self.nodes)
+
+    @property
+    def head(self):
+        return self.nodes[0]
 
 
 """
