@@ -33,3 +33,33 @@ class Template:
         print(self.template.format(*map.nodes))
         for user in users:
             print(f'{user}: {", ".join([str(p) for p in user.players if p.node is None])}')
+
+
+"""
+o . . . . o . . . . o . . . . o . . . . o . . . . o
+. .                                             . .
+.   .                                         .   .
+.     .                                     .     .
+.       o                                 o       .
+o         .                             .         o
+.           .                         .           .
+.             .                     .             .
+.               o                 o               .
+.                 .             .                 .
+o                   .         .                   o
+.                     .     .                     .
+.                       . .                       .
+.                        o                        .
+.                     .     .                     .
+o                   .         .                   o
+.                 .             .                 .
+.               o                 o               .
+.             .                     .             .
+.           .                         .           .
+o         .                             .         o
+.       o                                 o       .
+.     .                                     .     .
+.   .                                         .   .
+. .                                             . .
+o . . . . o . . . . o . . . . o . . . . o . . . . o
+"""
