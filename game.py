@@ -26,13 +26,12 @@ class Game:
                 prey.node = None
             node.players = list(p for p in node.players if p.owner == player.owner)
             return
-            return
         # prev = player.node.index if player.node else 'None'
         if next_node:
             player.set_node(next_node)
         elif player.node:
             if player.node.is_last:
-                player.was_goal = True
+                player.was_goaled = True
             else:
                 player.set_node(player.node.get_next())
         else:
@@ -51,9 +50,11 @@ class Game:
             print(' '.join([str(s) for s in Yut.states]), Yut.display())
             
             while True:
-                input_name = input(f'어떤 말을 움직이시겠습니까? {[p.name for p in user.players]}: ').strip()
+                input_name = input(f'어떤 말을 움직이시겠습니까? {[p.name for p in user.movable_players]}: ').strip()
                 try:
                     selected_player = user.get_player(input_name)
+                    if selected_player.was_goaled:
+                        raise ValueError()
                     break
                 except ValueError:
                     print(f'{input_name}은 유효하지 않은 입력입니다.')

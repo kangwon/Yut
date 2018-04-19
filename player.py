@@ -12,7 +12,11 @@ class User:
 
     @property
     def is_win(self):
-        return all([p.was_goal for p in self.players])
+        return all([p.was_goaled for p in self.players])
+
+    @property
+    def movable_players(self):
+        return [p for p in self.players if not p.was_goaled]
 
     def get_player(self, name):
         candidates = [p for p in self.players if p.name == name]
@@ -28,7 +32,7 @@ class Player:
     def __init__(self, owner, name):
         self.owner = owner
         self.name = name
-        self.was_goal = False
+        self.was_goaled = False
         self.node = None
         self.company = []
 
