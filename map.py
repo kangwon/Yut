@@ -1,33 +1,3 @@
-template = """
-{14} . . . . {13} . . . . {12} . . . . {11} . . . . {10} . . . . {9}       Finished: {29}
-. .                                             . .
-.   .                                         .   .
-.     .                                     .     .
-.       {26}                                 {22}       .
-{15}         .                             .         {8}
-.           .                         .           .
-.             .                     .             .
-.               {25}                 {23}               .
-.                 .             .                 .
-{16}                   .         .                   {7}
-.                     .     .                     .
-.                       . .                       .
-.                        {24}                        .
-.                     .     .                     .
-{17}                   .         .                   {6}
-.                 .             .                 .
-.               {27}                 {21}               .
-.             .                     .             .
-.           .                         .           .
-{18}         .                             .         {5}
-.       {28}                                 {20}       .
-.     .                                     .     .
-.   .                                         .   .
-. .                                             . .
-{19} . . . . {0} . . . . {1} . . . . {2} . . . . {3} . . . . {4}
-"""
-
-
 class MapNode:
 
     def __init__(self, index):
@@ -44,6 +14,10 @@ class MapNode:
 
     def get_next(self):
         return self.nexts[0]
+
+    @property
+    def is_last(self):
+        return not self.nexts
 
 
 class Map:
@@ -73,9 +47,6 @@ class Map:
         self.nodes[27].nexts.append(self.nodes[28])
         self.nodes[28].nexts.append(self.nodes[19])
         self.nodes[19].nexts.append(self.nodes[29])
-
-    def __str__(self):
-        return template.format(*self.nodes)
 
     @property
     def head(self):
