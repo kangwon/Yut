@@ -30,6 +30,7 @@ class Player:
         self.name = name
         self.was_goal = False
         self.node = None
+        self.company = []
 
     def __str__(self):
         return self.name
@@ -39,3 +40,15 @@ class Player:
             self.node.players.remove(self)
         node.players.append(self)
         self.node = node
+        self.take_company(node)
+
+    def take_company(self, node):
+        for c in self.company:
+            c.node.players.remove(c)
+            node.players.append(c)
+            c.node = node
+
+    def accompany(self, players):
+        peers = list(players)
+        peers.remove(self)
+        self.company = peers

@@ -1,5 +1,5 @@
 template = """
-{14} . . . . {13} . . . . {12} . . . . {11} . . . . {10} . . . . {9}
+{14} . . . . {13} . . . . {12} . . . . {11} . . . . {10} . . . . {9}       Finished: {29}
 . .                                             . .
 .   .                                         .   .
 .     .                                     .     .
@@ -37,7 +37,8 @@ class MapNode:
 
     def __str__(self):
         if self.players:
-            return self.players[0].name
+            players = '/'.join([p.name for p in self.players])
+            return players
         else:
             return 'o'
 
@@ -50,7 +51,7 @@ class Map:
     nodes = list()
 
     def __init__(self):
-        for i in range(29):
+        for i in range(30):
             self.nodes.append(MapNode(i))
         
         for i in range(19, 0, -1):
@@ -71,6 +72,7 @@ class Map:
         self.nodes[24].nexts.append(self.nodes[27])
         self.nodes[27].nexts.append(self.nodes[28])
         self.nodes[28].nexts.append(self.nodes[19])
+        self.nodes[19].nexts.append(self.nodes[29])
 
     def __str__(self):
         return template.format(*self.nodes)

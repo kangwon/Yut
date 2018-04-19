@@ -11,11 +11,22 @@ def print_environ(map_, users):
 
 def move(map_, player, value, next_node=None):
     if value <= 0:
+        node = player.node
+        peers = list(p for p in node.players if p.owner == player.owner)
+        peers.append(player)
+        preys = list(p for p in node.players if p.owner != player.owner)
+        for peer in peers:
+            peer.accompany(peers)
+        for prey in preys:
+            prey.node = None
+        node.players = list(p for p in node.players if p.owner == player.owner)
         return
     # prev = player.node.index if player.node else 'None'
     if next_node:
         player.set_node(next_node)
     elif player.node:
+        if player.node.index == 29:
+            return
         player.set_node(player.node.get_next())
     else:
         player.set_node(map_.head)
