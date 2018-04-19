@@ -15,8 +15,16 @@ class User:
         return all([p.was_goaled for p in self.players])
 
     @property
+    def staying_players(self):
+        return [str(p) for p in self.players if p.node is None]
+
+    @property
     def movable_players(self):
         return [p for p in self.players if not p.was_goaled]
+
+    @property
+    def goaled_players(self):
+        return [p for p in self.players if p.was_goaled]
 
     def get_player(self, name):
         candidates = [p for p in self.players if p.name == name]

@@ -32,7 +32,7 @@ class Template:
     def print_environ(self, map, users):
         print(self.template.format(*map.nodes))
         for user in users:
-            print(f'{user}: {", ".join([str(p) for p in user.players if p.node is None])}')
+            print(f'{user}: [{", ".join([str(p) for p in user.staying_players])}] / [{", ".join([str(p) for p in user.goaled_players])}]')
 
 
 """
