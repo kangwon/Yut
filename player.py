@@ -53,7 +53,6 @@ class Player:
         self.node = node
         if node:
             node.players.append(self)
-        self.take_company(node)
 
     def move(self, next_node):
         # for debug
@@ -66,15 +65,6 @@ class Player:
             self.set_node(next_node)
         # for debug
         print(prev, '->', self.node.index if self.node else 'None')
-
-    # 동행을 데려가는 함수
-    def take_company(self, node):
-        for c in self.company:
-            if c.node:
-                c.node.players.remove(c)
-            c.node = node
-            if node:
-                node.players.append(c)
 
     def accompany(self, players):
         peers = list(players)

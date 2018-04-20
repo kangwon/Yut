@@ -76,8 +76,12 @@ class Game:
                         break
                     except (IndexError, ValueError):
                         print(f'{input_node}은 유효하지 않은 입력입니다.')
+                for c in selected_player.company:
+                    self.move(c, Yut.value(), selected_node)
                 self.move(selected_player, Yut.value(), selected_node)
             else:
+                for c in selected_player.company:
+                    self.move(c, Yut.value())
                 self.move(selected_player, Yut.value())
 
             if user.is_win:
