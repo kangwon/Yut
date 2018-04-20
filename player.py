@@ -50,15 +50,31 @@ class Player:
     def set_node(self, node):
         if self.node:
             self.node.players.remove(self)
-        node.players.append(self)
         self.node = node
+        if node:
+            node.players.append(self)
         self.take_company(node)
 
+    def move(self, node):
+        # for debug
+        prev = player.node.index if player.node else 'None'
+        # 골인 처리
+        if self.node.is_last:
+            self.was_goaled = True
+            self.set_node(None)
+        else:
+            self.set_node(next_node)
+        # for debug
+        print(prev, '->', player.node.index if player.node else 'None')
+
+    # 동행을 데려가는 함수
     def take_company(self, node):
         for c in self.company:
-            c.node.players.remove(c)
-            node.players.append(c)
+            if c.node:
+                c.node.players.remove(c)
             c.node = node
+            if node:
+                node.players.append(c)
 
     def accompany(self, players):
         peers = list(players)

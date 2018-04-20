@@ -15,29 +15,35 @@ class Game:
         self.turn = 0
 
     def move(self, player, value, next_node=None):
-        if value <= 0:
-            node = player.node
-            peers = list(p for p in node.players if p.owner == player.owner)
-            peers.append(player)
-            preys = list(p for p in node.players if p.owner != player.owner)
-            for peer in peers:
-                peer.accompany(peers)
-            for prey in preys:
-                prey.node = None
-            node.players = list(p for p in node.players if p.owner == player.owner)
+        # after move
+        if value <= 0 and player.node:
+            self.handle_company(player.node)
+            self.handle_hunting(player.node)
             return
-        # prev = player.node.index if player.node else 'None'
+        
         if next_node:
-            player.set_node(next_node)
+            player.move(next_node)
         elif player.node:
-            if player.node.is_last:
-                player.was_goaled = True
-            else:
-                player.set_node(player.node.get_next())
+            player.move(player.node.get_next())
         else:
-            player.set_node(self.map.head)
-        # print(prev, '->', player.node.index)
+            player.move(self.map.head)
+        
         self.move(player, value - 1)
+
+    # 업힘 처리
+    def handle_company(self, node):
+        peers = list(p for p in node.players if p.owner == player.owner)
+        peers.append(player)
+        for peer in peers:
+            peer.accompany(peers)
+
+    # 잡아 먹힘 처리
+    def handle_hunting(self, node):
+        preys = list(p for p in node.players if p.owner != player.owner)
+        for prey in preys:
+            prey.accompany([])
+            prey.node = None
+        node.players = list(p for p in node.players if p.owner == player.owner)
 
     def play(self):
         while True:

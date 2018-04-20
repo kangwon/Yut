@@ -46,7 +46,6 @@ class Map:
         self.nodes[24].nexts.append(self.nodes[27])
         self.nodes[27].nexts.append(self.nodes[28])
         self.nodes[28].nexts.append(self.nodes[19])
-        self.nodes[19].nexts.append(self.nodes[29])
 
     @property
     def head(self):
