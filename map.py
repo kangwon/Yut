@@ -13,7 +13,7 @@ class MapNode:
             return 'o'
 
     def get_next(self):
-        return self.nexts[0]
+        return self.nexts[0] if len(self.nexts) else None
 
     @property
     def is_last(self):
