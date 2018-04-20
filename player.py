@@ -57,8 +57,10 @@ class Player:
     def move(self, next_node):
         # for debug
         prev = self.node.index if self.node else 'None'
+        if self.was_goaled:
+            return
         # 골인 처리
-        if self.node.is_last:
+        if self.node and self.node.is_last:
             self.was_goaled = True
             self.set_node(None)
         else:
@@ -68,5 +70,6 @@ class Player:
 
     def accompany(self, players):
         peers = list(players)
-        peers.remove(self)
+        while self in peers:
+            peers.remove(self)
         self.company = peers

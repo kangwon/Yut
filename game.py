@@ -16,9 +16,10 @@ class Game:
 
     def move(self, player, value, next_node=None):
         # after move
-        if value <= 0 and player.node:
-            self.handle_company(player.node)
-            self.handle_hunting(player.node)
+        if value <= 0:
+            if player.node:
+                self.handle_company(player)
+                self.handle_hunting(player)
             return
         
         if next_node:
@@ -31,19 +32,18 @@ class Game:
         self.move(player, value - 1)
 
     # 업힘 처리
-    def handle_company(self, node):
-        peers = list(p for p in node.players if p.owner == player.owner)
-        peers.append(player)
+    def handle_company(self, player):
+        peers = list(p for p in player.node.players if p.owner == player.owner)
         for peer in peers:
             peer.accompany(peers)
 
     # 잡아 먹힘 처리
-    def handle_hunting(self, node):
-        preys = list(p for p in node.players if p.owner != player.owner)
+    def handle_hunting(self, player):
+        preys = list(p for p in player.node.players if p.owner != player.owner)
         for prey in preys:
             prey.accompany([])
             prey.node = None
-        node.players = list(p for p in node.players if p.owner == player.owner)
+        player.node.players = list(p for p in player.node.players if p.owner == player.owner)
 
     def play(self):
         while True:
