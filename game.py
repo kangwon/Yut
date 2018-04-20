@@ -14,7 +14,7 @@ class Game:
         ]
         self.turn = 0
 
-    def move(self, player, value, next_node=None):
+    def move(self, player, value, next_node=None):            
         # after move
         if value <= 0:
             if player.node:
@@ -85,5 +85,5 @@ class Game:
                 self.move(selected_player, Yut.value())
 
             if user.is_win:
-                print(f'Congratulation! {user.name}')
+                print(f'Congratulation! The winner is {user.name}')
                 break
