@@ -55,9 +55,9 @@ class Player:
             node.players.append(self)
         self.take_company(node)
 
-    def move(self, node):
+    def move(self, next_node):
         # for debug
-        prev = player.node.index if player.node else 'None'
+        prev = self.node.index if self.node else 'None'
         # 골인 처리
         if self.node.is_last:
             self.was_goaled = True
@@ -65,7 +65,7 @@ class Player:
         else:
             self.set_node(next_node)
         # for debug
-        print(prev, '->', player.node.index if player.node else 'None')
+        print(prev, '->', self.node.index if self.node else 'None')
 
     # 동행을 데려가는 함수
     def take_company(self, node):
