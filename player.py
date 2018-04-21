@@ -61,7 +61,7 @@ class Player:
 
     def move(self, next_node):
         # for debug
-        prev = self.node.index if self.node else 'None'
+        # prev = self.node.index if self.node else 'None'
         if self.was_goaled:
             return
         # 골인 처리
@@ -71,7 +71,7 @@ class Player:
         else:
             self.set_node(next_node)
         # for debug
-        print(prev, '->', self.node.index if self.node else 'None')
+        # print(prev, '->', self.node.index if self.node else 'None')
 
     def accompany(self, players):
         peers = list(players)
