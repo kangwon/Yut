@@ -43,12 +43,17 @@ class Player:
         self.was_goaled = False
         self.node = None
         self.company = []
+        self.traces = []    # Not include current node
 
     def __str__(self):
         return self.name
 
+    def get_next_node(self):
+        return self.node.get_next(self.traces)
+
     def set_node(self, node):
         if self.node:
+            self.traces.append(self.node.index)
             self.node.players.remove(self)
         self.node = node
         if node:

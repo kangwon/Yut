@@ -25,7 +25,7 @@ class Game:
         if next_node:
             player.move(next_node)
         elif player.node:
-            player.move(player.node.get_next())
+            player.move(player.get_next_node())
         else:
             player.move(self.map.head)
         

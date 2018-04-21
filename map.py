@@ -43,12 +43,17 @@ class MapNode:
         else:
             return 'o'
 
-    def get_next(self):
+    def get_next(self, traces):
+        if self.index == 24:    # the center node
+            if traces[-1] == 21:
+                return self.nexts[0]
+            elif traces[-1] == 23:
+                return self.nexts[1]
         return self.nexts[0] if len(self.nexts) else None
 
     @property
     def is_last(self):
-        return not self.nexts
+        return not self.nexts        
 
 
 class Map:
