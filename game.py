@@ -14,12 +14,22 @@ class Game:
         ]
         self.turn = 0
 
-    def move(self, player, value, next_node=None):            
+    def move(self, player, value, next_node=None):
+        for c in player.company:
+            self.move_recur(c, Yut.value(), next_node)
+        self.move_recur(player, Yut.value(), next_node)
+
+        should_throw_one_more = False
+
+        if player.node:
+            self.handle_company(player)
+            should_throw_one_more = self.handle_hunting(player)
+
+        return should_throw_one_more
+
+    def move_recur(self, player, value, next_node=None):
         # after move
         if value <= 0:
-            if player.node:
-                self.handle_company(player)
-                self.handle_hunting(player)
             return
         
         if next_node:
@@ -29,7 +39,7 @@ class Game:
         else:
             player.move(self.map.head)
         
-        self.move(player, value - 1)
+        self.move_recur(player, value - 1)
 
     # 업힘 처리
     def handle_company(self, player):
@@ -44,15 +54,22 @@ class Game:
             prey.accompany([])
             prey.node = None
         player.node.players = list(p for p in player.node.players if p.owner == player.owner)
+        return bool(preys)
 
     def play(self):
+        should_throw_one_more = False
+
         while True:
-            self.turn += 1
-            user = self.users[(self.turn-1) % len(self.users)]
+            if not should_throw_one_more:
+                self.turn += 1
+                user = self.users[(self.turn-1) % len(self.users)]
+            
+            should_throw_one_more = False
             
             self.template.print_environ(self.map, self.users)
 
             Yut.throw()
+            should_throw_one_more = Yut.should_throw_one_more() or should_throw_one_more
             print(' '.join([str(s) for s in Yut.states]), Yut.display())
             
             while True:
@@ -76,13 +93,9 @@ class Game:
                         break
                     except (IndexError, ValueError):
                         print(f'{input_node}은 유효하지 않은 입력입니다.')
-                for c in selected_player.company:
-                    self.move(c, Yut.value(), selected_node)
-                self.move(selected_player, Yut.value(), selected_node)
+                should_throw_one_more = self.move(selected_player, Yut.value(), selected_node) or should_throw_one_more
             else:
-                for c in selected_player.company:
-                    self.move(c, Yut.value())
-                self.move(selected_player, Yut.value())
+                should_throw_one_more = self.move(selected_player, Yut.value()) or should_throw_one_more
 
             if user.is_win:
                 print(f'Congratulation! The winner is {user.name}')
