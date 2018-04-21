@@ -16,7 +16,7 @@ class User:
 
     @property
     def staying_players(self):
-        return [str(p) for p in self.players if p.node is None]
+        return [str(p) for p in self.players if not p.was_goaled and p.node is None]
 
     @property
     def movable_players(self):
