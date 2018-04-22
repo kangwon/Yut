@@ -41,7 +41,7 @@ class Template:
                 print(p, 'companies', p.company)
 
 
-    def select_player(self, user):
+    def select_player(self, env, user):
         while True:
             input_name = input(f'어떤 말을 움직이시겠습니까? {[p.name for p in user.movable_players]}: ').strip()
             try:
@@ -53,7 +53,7 @@ class Template:
                 print(f'{input_name}은 유효하지 않은 입력입니다.')
         return selected_player
 
-    def select_node(self, player):
+    def select_node(self, env, player):
         while True:
             print('어느 방향으로 움직이시겠습니까?')
             print('0: 돌아가는 방향')

@@ -3,6 +3,13 @@ from map import Map
 from yut import Yut
 
 
+class GameEnvironment:
+
+    def __init__(self, map_, users):
+        self.map = map_
+        self.users = users
+
+
 class Game:
 
     def __init__(self, template):
@@ -13,6 +20,7 @@ class Game:
             User('B', ['a', 's', 'd', 'f']),
         ]
         self.turn = 0
+        self.env = GameEnvironment(self.map, self.users)
 
     def move(self, player, value, next_node=None):
         for c in player.company:
@@ -72,10 +80,10 @@ class Game:
             should_throw_one_more = Yut.should_throw_one_more() or should_throw_one_more
             print(' '.join([str(s) for s in Yut.states]), Yut.display())
 
-            selected_player = self.template.select_player(user)
+            selected_player = self.template.select_player(self.env, user)
 
             if selected_player.node and len(selected_player.node.nexts) >= 2:
-                selected_node = self.template.select_node(selected_player)
+                selected_node = self.template.select_node(self.env, selected_player)
                 should_throw_one_more = self.move(selected_player, Yut.value(), selected_node) or should_throw_one_more
             else:
                 should_throw_one_more = self.move(selected_player, Yut.value()) or should_throw_one_more
