@@ -36,6 +36,9 @@ class MapNode:
         self.players = list()
         self.index = index
 
+    def __eq__(self, other):
+        return other and self.index == other.index
+
     def __str__(self):
         if self.players:
             players = '/'.join([p.name for p in self.players])
