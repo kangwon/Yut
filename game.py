@@ -1,7 +1,6 @@
-from player import User, Player
+from player import Player
 from map import Map
 from yut import Yut
-from interface import HumanInterface
 
 
 class GameEnvironment:
@@ -14,14 +13,9 @@ class GameEnvironment:
 
 class Game:
 
-    def __init__(self):
+    def __init__(self, users):
         self.map = Map()
-        
-        human_interface = HumanInterface()
-        self.users = [
-            User('A', ['q', 'w', 'e', 'r'], human_interface),
-            User('B', ['a', 's', 'd', 'f'], human_interface),
-        ]
+        self.users = users
         self.turn = 0
         self.env = GameEnvironment(self.map, self.users, Yut)
 
