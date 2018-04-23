@@ -48,6 +48,9 @@ class Player:
     def __str__(self):
         return self.name
 
+    def __hash__(self):
+        return self.name.__hash__()
+
     def get_next_node(self):
         return self.node.get_next(self.traces)
 

@@ -40,7 +40,6 @@ class Template:
             for p in u.players:
                 print(p, 'companies', p.company)
 
-
     def select_player(self, env, user):
         while True:
             input_name = input(f'어떤 말을 움직이시겠습니까? {[p.name for p in user.movable_players]}: ').strip()

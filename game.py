@@ -2,12 +2,15 @@ from player import User, Player
 from map import Map
 from yut import Yut
 
+import reward_rule
+
 
 class GameEnvironment:
 
-    def __init__(self, map_, users):
+    def __init__(self, map_, users, Yut):
         self.map = map_
         self.users = users
+        self.Yut = Yut
 
 
 class Game:
@@ -20,7 +23,7 @@ class Game:
             User('B', ['a', 's', 'd', 'f']),
         ]
         self.turn = 0
-        self.env = GameEnvironment(self.map, self.users)
+        self.env = GameEnvironment(self.map, self.users, Yut)
 
     def move(self, player, value, next_node=None):
         for c in player.company:
@@ -80,6 +83,8 @@ class Game:
             should_throw_one_more = Yut.should_throw_one_more() or should_throw_one_more
             print(' '.join([str(s) for s in Yut.states]), Yut.display())
 
+            p = reward_rule.get_max_reward_player(self.env, user.movable_players)
+            print('Expedted:', p)
             selected_player = self.template.select_player(self.env, user)
 
             if selected_player.node and len(selected_player.node.nexts) >= 2:

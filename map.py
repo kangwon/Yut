@@ -56,7 +56,7 @@ class MapNode:
 
     @property
     def is_last(self):
-        return not self.nexts        
+        return not self.nexts
 
 
 class Map:
