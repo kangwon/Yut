@@ -1,11 +1,13 @@
 class User:
 
-    def __init__(self, user_name, player_names):
+    def __init__(self, user_name, player_names, interface):
         self.name = user_name
 
         if len(set(player_names)) != 4:
             raise ValueError(f'player_names must be a list of 4 distinguishable strings: {player_names}')
         self.players = [Player(self, name) for name in player_names]
+
+        self.interface = interface
 
     def __str__(self):
         return self.name

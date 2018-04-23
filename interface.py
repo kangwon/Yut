@@ -1,4 +1,20 @@
-class Template:
+import abc
+
+import reward_rule
+
+
+class YutInterFace:
+
+    @abc.abstractmethod
+    def select_player(self, env, user):
+        pass
+
+    @abc.abstractclassmethod
+    def select_node(self, env, player):
+        pass
+
+
+class HumanInterface(YutInterFace):
 
     template = """
     {14} . . . . {13} . . . . {12} . . . . {11} . . . . {10} . . . . {9}
@@ -29,19 +45,20 @@ class Template:
     {19} . . . . {0} . . . . {1} . . . . {2} . . . . {3} . . . . {4}
 """
 
-    def print_environ(self, map, users):
-        print(self.template.format(*map.nodes))
-        for user in users:
+    def print_environ(self, env):
+        print(self.template.format(*env.map.nodes))
+        for user in env.users:
             print(f'{user}: [{", ".join([str(p) for p in user.staying_players])}] / [{", ".join([str(p) for p in user.goaled_players])}]')
+        print(' '.join([str(s) for s in env.Yut.states]), env.Yut.display())
 
-    # for debug
-    def print_companies(self, users):
-        for u in users:
-            for p in u.players:
-                print(p, 'companies', p.company)
+    def print_expect(self, env, user):
+        p = reward_rule.get_max_reward_player(env, user.movable_players)
+        print('Expedted:', p)
 
     def select_player(self, env, user):
         while True:
+            self.print_environ(env)
+            self.print_expect(env, user)
             input_name = input(f'어떤 말을 움직이시겠습니까? {[p.name for p in user.movable_players]}: ').strip()
             try:
                 selected_player = user.get_player(input_name)
@@ -64,33 +81,3 @@ class Template:
             except (IndexError, ValueError):
                 print(f'{input_node}은 유효하지 않은 입력입니다.')
         return selected_node
-
-
-"""
-o . . . . o . . . . o . . . . o . . . . o . . . . o
-. .                                             . .
-.   .                                         .   .
-.     .                                     .     .
-.       o                                 o       .
-o         .                             .         o
-.           .                         .           .
-.             .                     .             .
-.               o                 o               .
-.                 .             .                 .
-o                   .         .                   o
-.                     .     .                     .
-.                       . .                       .
-.                        o                        .
-.                     .     .                     .
-o                   .         .                   o
-.                 .             .                 .
-.               o                 o               .
-.             .                     .             .
-.           .                         .           .
-o         .                             .         o
-.       o                                 o       .
-.     .                                     .     .
-.   .                                         .   .
-. .                                             . .
-o . . . . o . . . . o . . . . o . . . . o . . . . o
-"""

@@ -1,8 +1,7 @@
 from player import User, Player
 from map import Map
 from yut import Yut
-
-import reward_rule
+from interface import HumanInterface
 
 
 class GameEnvironment:
@@ -15,12 +14,13 @@ class GameEnvironment:
 
 class Game:
 
-    def __init__(self, template):
-        self.template = template
+    def __init__(self):
         self.map = Map()
+        
+        human_interface = HumanInterface()
         self.users = [
-            User('A', ['q', 'w', 'e', 'r']),
-            User('B', ['a', 's', 'd', 'f']),
+            User('A', ['q', 'w', 'e', 'r'], human_interface),
+            User('B', ['a', 's', 'd', 'f'], human_interface),
         ]
         self.turn = 0
         self.env = GameEnvironment(self.map, self.users, Yut)
@@ -76,19 +76,14 @@ class Game:
                 user = self.users[(self.turn-1) % len(self.users)]
             
             should_throw_one_more = False
-            
-            self.template.print_environ(self.map, self.users)
 
             Yut.throw()
             should_throw_one_more = Yut.should_throw_one_more() or should_throw_one_more
-            print(' '.join([str(s) for s in Yut.states]), Yut.display())
 
-            p = reward_rule.get_max_reward_player(self.env, user.movable_players)
-            print('Expedted:', p)
-            selected_player = self.template.select_player(self.env, user)
+            selected_player = user.interface.select_player(self.env, user)
 
             if selected_player.node and len(selected_player.node.nexts) >= 2:
-                selected_node = self.template.select_node(self.env, selected_player)
+                selected_node = user.interface.select_node(self.env, selected_player)
                 should_throw_one_more = self.move(selected_player, Yut.value(), selected_node) or should_throw_one_more
             else:
                 should_throw_one_more = self.move(selected_player, Yut.value()) or should_throw_one_more
