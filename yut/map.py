@@ -66,10 +66,10 @@ class Map:
     def __init__(self):
         for i in range(30):
             self.nodes.append(MapNode(i))
-        
+
         for i in range(19, 0, -1):
             self.nodes[i-1].nexts.append(self.nodes[i])
-        
+
         self.nodes[4].nexts.append(self.nodes[20])
         self.nodes[20].nexts.append(self.nodes[21])
         self.nodes[21].nexts.append(self.nodes[24])

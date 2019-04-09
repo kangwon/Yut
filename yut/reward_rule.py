@@ -36,16 +36,18 @@ from player import Player
 
 
 INDEX_REWARD_MAP = [
-    1, 2, 3, 4, 9, 
+    1, 2, 3, 4, 9,
     6, 7, 8, 9, 14,
     11, 12, 13, 14, 15,
     16, 17, 18, 19, 20,
-    10, 11, 
-    15, 16, 
+    10, 11,
+    15, 16,
     17,
-    13, 14, 
+    13, 14,
     18, 19,
 ]
+
+REWARD_AT_GOAL = max(INDEX_REWARD_MAP) + 1
 
 
 VALUE_PROBABILITY_MAP = {
@@ -81,14 +83,14 @@ def move_recur(head, player, value, next_node=None):
     # after move
     if value <= 0:
         return
-    
+
     if next_node:
         player.move(next_node)
     elif player.node:
         player.move(player.get_next_node())
     else:
         player.move(head)
-    
+
     move_recur(head, player, value - 1)
 
 
@@ -161,26 +163,29 @@ def get_reward(env, player):
 
 def get_max_reward_player(env, players):
     rewards = []
-    
+
     current_rewards = {player: get_reward(env, player) for player in players}
 
     for player in players:
         tmp = []
         available_nexts = player.node.nexts if player.node else [None]
-        for next_node in available_nexts:
-            virtual_player = move_virtually(env.map.head, player, env.Yut.value(), next_node)
-            expected_reward = get_reward(env, virtual_player)
-            for p, r in current_rewards.items():
-                if p.name == virtual_player.name:
-                    continue
-                # 업힘 점수
-                elif virtual_player.node and virtual_player.node == p.node:
-                    expected_reward += 21
-                else:
-                    expected_reward += r
-            tmp.append(expected_reward)
-            if virtual_player.node:
-                virtual_player.node.players.remove(virtual_player)
+        if available_nexts:
+            for next_node in available_nexts:
+                virtual_player = move_virtually(env.map.head, player, env.Yut.value(), next_node)
+                expected_reward = get_reward(env, virtual_player)
+                for p, r in current_rewards.items():
+                    if p.name == virtual_player.name:
+                        continue
+                    # 업힘 점수
+                    elif virtual_player.node and virtual_player.node == p.node:
+                        expected_reward += 21
+                    else:
+                        expected_reward += r
+                tmp.append(expected_reward)
+                if virtual_player.node:
+                    virtual_player.node.players.remove(virtual_player)
+        else:   # 마지막 칸에 있을 때
+            tmp.append(REWARD_AT_GOAL)
         rewards.append(max(tmp))
     print(rewards)
     return players[rewards.index(max(rewards))]
