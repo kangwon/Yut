@@ -92,7 +92,7 @@ def move_recur(head, player, value, next_node=None):
     move_recur(head, player, value - 1)
 
 
-def move_vitually(head, player, value, next_node=None):
+def move_virtually(head, player, value, next_node=None):
     virtual_player = copy.deepcopy(player)
     move_recur(head, virtual_player, value, next_node)
     return virtual_player
@@ -143,7 +143,7 @@ def get_hunted_expectation(env, player):
             available_nexts = p.node.nexts if p.node else [None]
             for value, prob in VALUE_PROBABILITY_MAP.items():
                 for next_node in available_nexts:
-                    virtual_player = move_vitually(env.map.head, p, value, next_node)
+                    virtual_player = move_virtually(env.map.head, p, value, next_node)
                     if player.node == virtual_player.node:
                         hunted_expectation += prob * get_position_reward(player)
                     if virtual_player.node:
@@ -168,7 +168,7 @@ def get_max_reward_player(env, players):
         tmp = []
         available_nexts = player.node.nexts if player.node else [None]
         for next_node in available_nexts:
-            virtual_player = move_vitually(env.map.head, player, env.Yut.value(), next_node)
+            virtual_player = move_virtually(env.map.head, player, env.Yut.value(), next_node)
             expected_reward = get_reward(env, virtual_player)
             for p, r in current_rewards.items():
                 if p.name == virtual_player.name:
