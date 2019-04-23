@@ -64,7 +64,7 @@ class Map:
     nodes = list()
 
     def __init__(self):
-        for i in range(30):
+        for i in range(29):
             self.nodes.append(MapNode(i))
 
         for i in range(19, 0, -1):
